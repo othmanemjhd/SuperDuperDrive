@@ -3,6 +3,8 @@ package com.udacity.jwdnd.course1.cloudstorage.services;
 
 import com.udacity.jwdnd.course1.cloudstorage.mappers.UserMapper;
 import com.udacity.jwdnd.course1.cloudstorage.models.User;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
@@ -33,5 +35,17 @@ public class UserService {
 
     public User getUser(String username){
         return this.userMapper.getUser(username);
+    }
+    public int getCurrentUserId(){
+        return  this.userMapper.getUser(getCurrentUsername()).getuserId();
+    }
+    public String getCurrentUsername() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null) {
+            return authentication.getName(); // Retrieves the username of the currently authenticated user
+        }
+
+        return null; // No user authenticated
     }
 }

@@ -10,15 +10,17 @@ public interface FileMapper {
     @Select("SELECT * FROM FILES WHERE fileId = #{id}")
     File getFileById(Integer id);
 
-    @Select("SELECT * FROM FILE WHERE userid = #{userid}")
-    List<File> getAllFilesByuserId(int userid);
-    @Insert("INSERT INTO FILES (filename,contenttype,filesize,userid,filedata) " +
-            "VALUES (#{filename},#{contenttype},#{filesize},#{userid},#{filedata})")
+    @Select("SELECT * FROM FILES WHERE filename = #{filename}")
+    File getFileByFilename(String filename);
+    @Select("SELECT * FROM FILES WHERE userid = #{userid}")
+    List<File> getAllFilesByUserId(int userid);
+    @Insert("INSERT INTO FILES (filename,contenttype,filesize,userid,fileData) " +
+            "VALUES (#{filename},#{contenttype},#{filesize},#{userid},#{fileData})")
     @Options(useGeneratedKeys = true, keyProperty = "fileId")
     int insertFile(File file);
 
 
-    @Delete("DELETE FROM FILE WHERE fileId = #{fileId}")
+    @Delete("DELETE FROM FILES WHERE fileId = #{fileId}")
     void deleteFile(int fileId);
 
 }

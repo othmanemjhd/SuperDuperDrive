@@ -5,3 +5,10 @@
     background-color: #f0f0f0; /* Background color */
     padding: 10px;
 }
+.form-container {
+    display: flex;
+}
+
+.inline-form {
+    margin-right: 10px; /* Adjust margin between forms as needed */
+}
