@@ -7,6 +7,7 @@
 }
 .form-container {
     display: flex;
+    gap: 10px;
 }
 
 .inline-form {

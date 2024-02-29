@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>File</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
+<h1>File Content</h1>
+<object th:attr="data='/file/view/' + ${fileName}"
+        type="application/pdf"
+        width="100%"
+        height="500px">
+    <embed th:attr="src='/documents/' + ${fileName}"
+           type="application/pdf"
+           width="100%"
+           height="500px" />
+</object>
+
+
+<!--<div th:if="${fileEntity != null}">
+    <p>File Name: <span th:text="${fileEntity.filename}"></span></p>
+    <p>File Type: <span th:text="${fileEntity.contenttype}"></span></p>
+    &lt;!&ndash; Add other file details as needed &ndash;&gt;
+
+    &lt;!&ndash; Display the file content (assuming it's text) &ndash;&gt;
+    <pre th:text="${dataFile}"></pre>
+</div>
+<div th:unless="${fileEntity != null}">
+    <p>No file found.</p>
+</div>-->
+</body>
+</html>

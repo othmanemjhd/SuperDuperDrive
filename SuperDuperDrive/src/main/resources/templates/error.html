@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Error</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
+<h1>Error Occurred</h1>
+<p th:text="${errorMessage}"></p>
+<pre th:text="${errorStack}"></pre>
+<a class="btn btn-info" th:href="@{/login}">To login</a>
+<a class="btn btn-success" th:href="@{/home}">To home</a>
+</body>
+</html>
