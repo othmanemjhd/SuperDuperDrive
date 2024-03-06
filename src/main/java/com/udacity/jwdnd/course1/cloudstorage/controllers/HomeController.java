@@ -3,6 +3,7 @@ package com.udacity.jwdnd.course1.cloudstorage.controllers;
 import com.udacity.jwdnd.course1.cloudstorage.models.Credential;
 import com.udacity.jwdnd.course1.cloudstorage.models.File;
 import com.udacity.jwdnd.course1.cloudstorage.models.Note;
+import com.udacity.jwdnd.course1.cloudstorage.services.CredentialService;
 import com.udacity.jwdnd.course1.cloudstorage.services.FileService;
 import com.udacity.jwdnd.course1.cloudstorage.services.NoteService;
 import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
@@ -22,10 +23,13 @@ public class HomeController {
     private final UserService userService;
     private final FileService fileService;
     private final NoteService noteService;
-    public HomeController(UserService userService,FileService fileService,NoteService noteService) {
+    private CredentialService credentialService;
+
+    public HomeController(UserService userService,FileService fileService,NoteService noteService,CredentialService credentialService) {
         this.userService = userService;
         this.fileService = fileService;
         this.noteService = noteService;
+        this.credentialService = credentialService;
     }
 
 
@@ -35,8 +39,7 @@ public class HomeController {
         Note note = new Note();
         model.addAttribute("note", note);
         Credential credential = new Credential();
-        model.addAttribute("credential", credential);
-        model.addAttribute("page","files");
+        model.addAttribute("mycredential", credential);
         return "home";
     }
 
@@ -54,5 +57,8 @@ public class HomeController {
     public List<Note> getAllNotes(Model model){
         return this.noteService.getAllNotes();
     }
+    @ModelAttribute("mycredentials")
+    public List<Credential> getAllCredentials(Model model) {
+        return this.credentialService.getAllCredentials();}
 
 }

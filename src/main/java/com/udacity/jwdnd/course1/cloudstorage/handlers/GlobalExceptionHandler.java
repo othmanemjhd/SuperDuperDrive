@@ -1,4 +1,4 @@
-package com.udacity.jwdnd.course1.cloudstorage.controllers;
+package com.udacity.jwdnd.course1.cloudstorage.handlers;
 
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;

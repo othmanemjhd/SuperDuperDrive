@@ -1,16 +1,15 @@
 package com.udacity.jwdnd.course1.cloudstorage.controllers;
 
 
-import com.udacity.jwdnd.course1.cloudstorage.models.File;
 import com.udacity.jwdnd.course1.cloudstorage.models.Note;
-import com.udacity.jwdnd.course1.cloudstorage.services.FileService;
 import com.udacity.jwdnd.course1.cloudstorage.services.NoteService;
 import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -22,7 +21,7 @@ public class NoteController {
     private final UserService userService;
 
 
-    public NoteController(NoteService noteService,UserService userService,FileService fileService) {
+    public NoteController(NoteService noteService,UserService userService) {
         this.noteService = noteService;
         this.userService = userService;
     }
@@ -40,24 +39,24 @@ public class NoteController {
 
 
         redirectAttributes.addFlashAttribute("notes",this.noteService.getAllNotes());
-        setPageAttribute(model,"notes");
-        return "redirect:home";
+        setPageAttribute(redirectAttributes,"notes");
+        return "redirect:/home";
     }
 
 
     @PostMapping("/delete/{noteid}")
-    public String deleteNote(@PathVariable String noteid,Model model){
+    public String deleteNote(@PathVariable String noteid,RedirectAttributes redirectAttributes,Model model){
         try {
             this.noteService.deleteNote(Integer.parseInt(noteid));
-            model.addAttribute("delete-success",true);
+            redirectAttributes.addFlashAttribute("delete-success",true);
         }catch(Exception e) {
             e.printStackTrace();
-            model.addAttribute("delete-error","Error deleting note with ID : "+noteid);
+            redirectAttributes.addFlashAttribute("delete-error","Error deleting note with ID : "+noteid);
         }
-        model.addAttribute("notes",this.noteService.getAllNotes());
-        model.addAttribute("note", new Note());
-        setPageAttribute(model,"notes");
-        return "home";
+        redirectAttributes.addFlashAttribute("notes",this.noteService.getAllNotes());
+        redirectAttributes.addFlashAttribute("note", new Note());
+        setPageAttribute(redirectAttributes,"notes");
+        return "redirect:/home";
     }
     @PostMapping("/update/")
     public String updateNote(@ModelAttribute("note") Note updatedNote,RedirectAttributes redirectAttributes,Model model){
@@ -76,15 +75,15 @@ public class NoteController {
             redirectAttributes.addFlashAttribute("update-error","Error retrieving the note");
         }
       redirectAttributes.addFlashAttribute("notes",this.noteService.getAllNotes());
-        setPageAttribute(model,"notes");
+        setPageAttribute(redirectAttributes,"notes");
         return "redirect:/home";
     }
     @ModelAttribute("notes")
     public List<Note> getAllNotes(Model model){
         return this.noteService.getAllNotes();
     }
-    private void setPageAttribute(Model model, String page) {
-        model.addAttribute("page", page);
+    private void setPageAttribute(RedirectAttributes model, String page) {
+        model.addFlashAttribute("page", page);
     }
 
 }

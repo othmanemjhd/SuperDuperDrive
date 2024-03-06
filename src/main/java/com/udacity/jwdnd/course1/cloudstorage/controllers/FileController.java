@@ -32,18 +32,18 @@ public class FileController {
     }
 
     @PostMapping("/delete/{fileId}")
-    public String deleteFile(@PathVariable("fileId") int fileId, Model model){
+    public String deleteFile(@PathVariable("fileId") int fileId, RedirectAttributes redirectAttributes,Model model){
 
         try {
             this.fileService.deleteFile(fileId);
-            model.addAttribute("deleteSuccess",true);
+            redirectAttributes.addFlashAttribute("deleteSuccess",true);
         }catch(Exception e){
-            model.addAttribute("deleteError", "Error deleting file with ID " + fileId);
+            redirectAttributes.addFlashAttribute("deleteError", "Error deleting file with ID " + fileId);
         }
-        model.addAttribute("files", this.fileService.getAllFiles());
-        setPageAttribute(model, "files");
+        redirectAttributes.addFlashAttribute("files", this.fileService.getAllFiles());
+        setPageAttribute(redirectAttributes, "files");
 
-        return "home";
+        return "redirect:/home";
     }
 
     @PostMapping
@@ -74,18 +74,18 @@ public class FileController {
             redirectAttributes.addFlashAttribute("fileUploadError", fileUploadError);
         }
         redirectAttributes.addFlashAttribute("files", this.fileService.getAllFiles());
-        setPageAttribute(model, "files");
-        return "redirect:home";
+        setPageAttribute(redirectAttributes, "files");
+        return "redirect:/home";
     }
 
     @GetMapping("/view/{fileId}")
-    public String viewFile(@PathVariable String fileId , Model model) throws IOException {
+    public String viewFile(@PathVariable String fileId ,RedirectAttributes redirectAttributes, Model model) throws IOException {
         File file = this.fileService.getFileById(Integer.parseInt(fileId));
         model.addAttribute("fileEntity",file);
         ByteArrayResource resource = new ByteArrayResource(file.getFileData());
         Charset charset = StandardCharsets.UTF_8;
         model.addAttribute("dataFile",resource.getContentAsString(charset));
-        setPageAttribute(model, "files");
+        setPageAttribute(redirectAttributes, "files");
         return "displayedFile";
     }
     @ModelAttribute("currentUsername")
@@ -101,7 +101,7 @@ public class FileController {
     public List<File> getAllFiles(Model model){
         return this.fileService.getAllFiles();
     }
-    private void setPageAttribute(Model model, String page) {
-        model.addAttribute("page", page);
+    private void setPageAttribute(RedirectAttributes model, String page) {
+        model.addFlashAttribute("page", page);
     }
 }

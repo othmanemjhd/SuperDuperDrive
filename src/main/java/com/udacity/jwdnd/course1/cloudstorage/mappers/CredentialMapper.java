@@ -15,12 +15,15 @@ public interface CredentialMapper {
     List<Credential> getAllCredentialsByUser(int userid);
 
 
-    @Insert("INSERT INTO CREDENTIALS (url,username,key,password,userid) " +
-            "VALUES (#{url},#{username},#{key},#{password},#{userid}")
+    @Insert("INSERT INTO CREDENTIALS (url,username,`key`,password,userid) " +
+            "VALUES (#{url},#{username},#{key},#{password},#{userid});")
     @Options(useGeneratedKeys = true, keyProperty = "credentialid")
     int insertCredential(Credential credential);
 
 
     @Delete("DELETE FROM CREDENTIALS WHERE credentialid = #{credentialid}")
     void deleteCredential(int credentialid);
+
+    @Update("UPDATE CREDENTIALS SET url=#{url} , username = #{username} , password = #{password} where credentialid = #{credentialid} ")
+    int updateCredential(Credential c);
 }
